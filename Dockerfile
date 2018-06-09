@@ -2,7 +2,7 @@ FROM centos:7
 
 MAINTAINER Sergii Rolskyi
 
-ENV ELASTIC_VERSION 5.5.1
+ENV ELASTIC_VERSION 5.6.2
 
 ENV ELASTIC_CONTAINER true
 ENV PATH=/usr/share/logstash/bin:$PATH
