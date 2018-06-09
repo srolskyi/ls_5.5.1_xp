@@ -1,0 +1,28 @@
+#!/bin/bash
+logstash_vars=(
+	path.data
+	path.config
+	path.logs
+	xpack.license.self_generated.type
+	xpack.monitoring.enabled
+	xpack.monitoring.elasticsearch.url
+	xpack.monitoring.elasticsearch.username
+	xpack.monitoring.elasticsearch.password
+	xpack.monitoring.collection.interval
+)
+longopts=''
+for logstash_var in ${logstash_vars[*]}; do
+    # 'elasticsearch.url' -> 'ELASTICSEARCH_URL'
+    env_var=$(echo ${logstash_var^^} | tr . _)
+
+    # Indirectly lookup env var values via the name of the var.
+    # REF: http://tldp.org/LDP/abs/html/bashver2.html#EX78
+    value=${!env_var}
+    if [[ -n $value ]]; then
+      longopt="--${logstash_var}=${value}"
+      longopts+=" ${longopt}"
+    fi
+done
+#exec /usr/share/logstash/bin/logstash --cpu.cgroup.path.override=/ --cpuacct.cgroup.path.override=/ ${longopts}
+exec /usr/share/logstash/bin/logstash ${longopts}
+
